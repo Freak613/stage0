@@ -1,0 +1,11 @@
+{
+  "name": "stage0",
+  "version": "0.0.1",
+  "description": "Collection of low-level DOM tools for building high performant web interfaces",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pavel Martynov <martynov.pl@gmail.com>",
+  "license": "MIT"
+}
