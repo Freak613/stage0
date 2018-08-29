@@ -1,6 +1,67 @@
 # stage0
 
-Collection of low-level DOM tools for building high performant web interfaces
+Collection of low-level DOM tools for building high performant web interfaces.
+
+## Eh?
+
+Given `h` function for extracting DOM references, organize work whatever you like and use full power of native DOM API.
+
+## How can I use it?
+
+```javascript
+import h from 'stage0'
+
+// Let's build some Component
+const itemView = h`
+  <tr>
+      <td class="col-md-1">#id</td>
+      <td class="col-md-4">
+          <a #select>#label</a>
+      </td>
+      <td class="col-md-1"><a #del><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+      <td class="col-md-6"></td>
+  </tr>
+`
+function Item(item, scope) {
+  const root = itemView
+
+  // Collect references to dynamic parts
+  const refs = itemView.collect(root)
+
+  const {id, label, select, del} = refs
+
+  // One time data binding
+  id.nodeValue = item.id
+  label.nodeValue = item.label
+  select.onclick = () => scope.select(item)
+  del.onclick = () => scope.del(item)
+
+  // Handcrafted update function, we know exactly what parts of component will change after creation
+  // and what parameters we need to update the view
+  let a = '', a2,
+      b = item.label, b2
+  root.update = function(selected) {
+    a2 = item.id === selected ? 'danger' : ''
+    b2 = item.label
+    
+    if (a2 !== a) a = root.className = a2
+    if (b2 !== b) b = label.nodeValue = b2
+  }
+
+  return root
+}
+
+// Create component
+const node = Item({id: 1, label: 'Wow'}, {
+    select: item => console.debug({item}),
+    del: item => console.debug({item})
+})
+document.body.appendChild(node)
+
+// And update the node
+const selected = 1
+node.update(selected)
+```
 
 ## h
 ```javascript
