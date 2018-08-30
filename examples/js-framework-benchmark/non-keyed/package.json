@@ -5,7 +5,8 @@
   "main": "dist/app.min.js",
   "scripts": {
     "build-dev": "rollup -c -w",
-    "build-prod": "rollup -c"
+    "build-prod": "rollup -c",
+    "start": "ws"
   },
   "js-framework-benchmark": {
     "frameworkVersionFromPackage": "stage0"
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/krausest/js-framework-benchmark#readme",
   "dependencies": {
+    "local-web-server": "^2.6.0",
     "stage0": "0.0.2"
   },
   "devDependencies": {
