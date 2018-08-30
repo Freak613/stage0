@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "scripts": {
+    "build-dev": "rollup -c -w",
+    "build-prod": "rollup -c"
+  },
+  "dependencies": {
+    "stage0": "0.0.1",
+    "todomvc-app-css": "^2.0.1",
+    "todomvc-common": "^1.0.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-es2016": "^6.24.1",
+    "rollup": "^0.58.2",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-minifyliterals": "^1.1.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-terser": "^1.0.1",
+    "rollup-plugin-uglify": "^3.0.0",
+    "uglify-es": "^3.3.9"
+  }
+}
