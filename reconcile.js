@@ -8,7 +8,7 @@
 // How this implementation differs from others, is that it's working with data directly,
 // without maintaining nodes arrays, and uses dom props firstChild/lastChild/nextSibling
 // for markers moving.
-export function reconcile(parent, renderedValues, data, createFn, noOp) {
+export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNode) {
     // Fast path for clear
     if (data.length === 0) {
         parent.textContent = ""
@@ -30,7 +30,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp) {
         loop = true,
         prevEnd = renderedValues.length-1, newEnd = data.length-1,
         a, b,
-        prevStartNode = parent.firstChild,
+        prevStartNode = beforeNode ? beforeNode.nextSibling : parent.firstChild,
         newStartNode = prevStartNode,
         prevEndNode = parent.lastChild,
         newEndNode = prevEndNode,
@@ -148,12 +148,23 @@ export function reconcile(parent, renderedValues, data, createFn, noOp) {
 
     // Fast path for full replace
     if (reusingNodes === 0) {
-        parent.textContent = ""
+        if (beforeNode) {
+            let node = beforeNode.nextSibling, tmp
+            while(prevStart <= prevEnd) {
+                tmp = node.nextSibling
+                parent.removeChild(node)
+                node = tmp
+                prevStart++
+            }
+        } else {
+            parent.textContent = ""
+        }
         let node
         for(let i = newStart; i <= newEnd; i++) {
             node = createFn(data[i])
             parent.appendChild(node)
         }
+
         return
     }
 
@@ -181,7 +192,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp) {
                 tmpD = createFn(data[i])
             } else {
                 tmpD = nodes[P[i]]
-                noOp(data[i])
+                noOp(tmpD, data[i])
             }
             parent.insertBefore(tmpD, afterNode)
             afterNode = tmpD
