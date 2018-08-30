@@ -118,10 +118,10 @@ export function reconcile(parent, renderedValues, data, createFn, noOp) {
     // Fast path for add
     if (prevEnd < prevStart) {
         if (newStart <= newEnd) {
-            let node
+            let node, mode = afterNode ? 1 : 0
             while(newStart <= newEnd) {
                 node = createFn(data[newStart])
-                parent.appendChild(node)
+                mode ? parent.insertBefore(node, afterNode) : parent.appendChild(node)
                 newStart++
             }
         }
