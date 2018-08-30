@@ -1,10 +1,20 @@
 # stage0
 
-Collection of low-level DOM tools for building high performant web interfaces.
+Collection of low-level DOM tools for building high performant web interfaces using plain old Vanilla JS.
 
 ## Eh?
 
 Given `h` function for extracting DOM references, organize work whatever you like and use full power of native DOM API.
+
+## Benefits
+
+- Zero dependencies, tiny size. You barely feel it.
+- No building required. Create JS file, load it in the browser and it will just works.
+- No abstractions. Complete freedom over rendering and updating pipelines. The code will do only what you want it to do.
+- Template strings. You don't need to write DOM API manually, cause cloning is much faster.
+- Performance. This library have all good ideas of [domc](https://github.com/Freak613/domc) library, which is already [doing pretty well](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html).
+
+Check out [examples](https://github.com/Freak613/stage0/tree/master/examples)
 
 ## How can I use it?
 
@@ -89,6 +99,7 @@ import {setupSyntheticEvent} from 'stage0'
 
 setupSyntheticEvent('click')
 // will setup global event handler, that will run handler from nearest predecessor in DOM tree
+// Synthetic Events are used to reduce amount of listeners on page, when you have too many of them
 
 // To attach event handler, simply do
 node.__click = () => console.debug('click')
