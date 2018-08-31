@@ -32,6 +32,6 @@ export default {
       runtimeHelpers: true,
       babelrc: false,
     }),
-    // terser()
+    terser()
   ],
 }
