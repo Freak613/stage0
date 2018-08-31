@@ -1,7 +1,7 @@
 {
-  "name": "sierpinski-stage0",
+  "name": "uibench-stage0",
   "version": "1.0.0",
-  "description": "Sierpinski triangle stage0 demo",
+  "description": "UIBench stage0 demo",
   "main": "dist/app.min.js",
   "scripts": {
     "build-dev": "rollup -c -w",

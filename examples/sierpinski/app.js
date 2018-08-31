@@ -45,11 +45,7 @@ function DotsData(x, y, s, text) {
   return dots
 }
 
-const dotView = h`
-  <div>
-    #text
-  </div>
-`
+const dotView = h`<div>#text</div>`
 function Dot(dot) {
   const root = dotView.cloneNode(true)
   const refs = dotView.collect(root)
@@ -82,12 +78,7 @@ function Dot(dot) {
   return root
 }
 
-const triangleView = h`
-  <div>
-    <div #dots>
-    </div>
-  </div>
-`
+const triangleView = h`<div><div #dots></div></div>`
 function SierpinskiTriangle() {
   const root = triangleView
   const refs = triangleView.collect(root)
