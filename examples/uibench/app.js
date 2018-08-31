@@ -140,7 +140,7 @@ function TreeNode(node) {
             renderedItems,
             node.children,
             node => node.container ? TreeNode(node) : TreeLeaf(node),
-            () => {}
+            (node, data) => node.update && node.update(data)
         )
         renderedItems = node.children.slice()
     }
