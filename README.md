@@ -9,7 +9,7 @@ Given `h` function for extracting DOM references, organize work whatever you lik
 ## Benefits
 
 - Zero dependencies, tiny size. You barely feel it.
-- No building required. Create JS file, load it in the browser and it will just works.
+- No building, no polyfills required. Create JS file, load it in the browser and it will just works.
 - No abstractions. Complete freedom over rendering and updating pipelines. The code will do only what you want it to do.
 - Template strings. You don't need to write DOM API manually, cause cloning is much faster.
 - Performance. This library have all good ideas of [domc](https://github.com/Freak613/domc) library, which is already [doing pretty well](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html).
@@ -18,10 +18,54 @@ Check out [examples](https://github.com/Freak613/stage0/tree/master/examples)
 
 ## How can I use it?
 
+Let's build simple counter example:
+
 ```javascript
 import h from 'stage0'
 
-// Let's build some Component
+// Create view template.
+// Mark with #-syntax dynamic references that you need.
+const view = h`
+  <div>
+    <h1>#count</h1>
+    <button #down>-</button>
+    <button #up>+</button>
+  </div>
+`
+function Main() {
+    const root = view
+
+    // Collect references to dynamic parts
+    const {count, down, up} = view.collect(root)
+
+    const state = {
+        count: 0
+    }
+
+    down.onclick = () => {
+        state.count--
+        update()
+    }
+
+    up.onclick = () => {
+        state.count++
+        update()
+    }
+
+    const update = () => count.nodeValue = state.count
+    update()
+
+    return root
+}
+
+document.body.appendChild(Main())
+```
+
+More complex example:
+
+```javascript
+import h from 'stage0'
+
 const itemView = h`
   <tr>
       <td class="col-md-1">#id</td>
@@ -34,11 +78,7 @@ const itemView = h`
 `
 function Item(item, scope) {
   const root = itemView
-
-  // Collect references to dynamic parts
-  const refs = itemView.collect(root)
-
-  const {id, label, select, del} = refs
+  const {id, label, select, del} = itemView.collect(root)
 
   // One time data binding
   id.nodeValue = item.id

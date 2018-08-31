@@ -101,32 +101,32 @@ function Main() {
   let root = mainView
   let refs = mainView.collect(root)
 
-  let data, renderedData, selected
-  data = renderedData = []
+  let data = [],
+      selected
 
   const {tbody} = refs
 
   refs.run.__click = () => {
     data = buildData(1000)
-    update()
+    update(0)
   }
   refs.runlots.__click = () => {
     data = buildData(10000)
-    update()
+    update(0)
   }
   refs.add.__click = () => {
     data = data.concat(buildData(1000))
-    update()
+    update(0)
   }
   refs.update.__click = () => {
     for (let i = 0; i < data.length; i += 10) {
         data[i].label += ' !!!'
     }
-    update()
+    update(1)
   }
   refs.cleardata.__click = () => {
     data = []
-    update()
+    update(0)
   }
   refs.swaprows.__click = () => {
     if(data.length > 998) {
@@ -134,29 +134,32 @@ function Main() {
       data[1] = data[998];
       data[998] = tmp;
     }
-    update()
+    update(0)
   }
 
   const scope = {
     select: item => {
         selected = parseInt(item.id)
-        update()
+        update(1)
     },
     del: item => {
       const id = item.id
       const idx = data.findIndex(d => d.id === id);
       data.splice(idx, 1)
-      update()
+      update(0)
     }
   }
 
-  function update() {
+  let renderedData = []
+  function update(deep) {
     reconcile(
       tbody,
       renderedData,
       data,
       item => Item(item, scope),
-      node => node.update(selected)
+      deep ?
+        node => node.update(selected) :
+        () => {}
     )
     renderedData = data.slice()
   }

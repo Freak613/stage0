@@ -106,8 +106,8 @@ function Main() {
   let root = mainView
   let refs = mainView.collect(root)
 
-  let data, renderedData, selected
-  data = renderedData = []
+  let data = [],
+      selected
 
   const {tbody} = refs
 
@@ -155,6 +155,7 @@ function Main() {
     }
   }
 
+  let renderedData = []
   function update() {
     reuseNodes(
       tbody,
