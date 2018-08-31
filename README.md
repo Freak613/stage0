@@ -99,7 +99,7 @@ import {setupSyntheticEvent} from 'stage0'
 
 setupSyntheticEvent('click')
 // will setup global event handler, that will run handler from nearest predecessor in DOM tree
-// Synthetic Events are used to reduce amount of listeners on page, when you have too many of them
+// Synthetic Events are used to reduce amount of listeners on page
 
 // To attach event handler, simply do
 node.__click = () => console.debug('click')
@@ -109,8 +109,9 @@ node.__click = () => console.debug('click')
 ```javascript
 import reconcile from 'stage0/reconcile'
 
-// Reconcile nodes in given parent, according to new and previous rendered data arrays
-// Used for displaying node arrays
+// Reconcile nodes in given parent, comparing new and previous data arrays.
+// Used for displaying node arrays.
+// Good for arrays with mutable data, cause it compares array items directly.
 reconcile(
     parent,
     renderedValues,
@@ -118,7 +119,29 @@ reconcile(
     // Create callback
     item => document.createTextNode(item),
     // Update callback
-    (node, item) => node.nodeValue = item + ' !!!'
+    (node, item) => node.nodeValue = item + ' !!!',
+    // Optional, node that comes before rendered list
+    beforeNode
+)
+```
+
+## keyed
+```javascript
+import keyed from 'stage0/keyed'
+
+// Reconcile implementation for keyed collections.
+// Good for immutable data arrays.
+keyed(
+    'id',
+    parent,
+    renderedValues,
+    newValues,
+    // Create callback
+    item => document.createTextNode(item),
+    // Update callback
+    (node, item) => node.nodeValue = item + ' !!!',
+    // Optional, node that comes before rendered list
+    beforeNode
 )
 ```
 
@@ -127,8 +150,9 @@ reconcile(
 import reuseNodes from 'stage0/reuseNodes'
 
 // Similar to reconcile, with exception that it will not move any node, 
-// doing only updates on all nodes and adding/removing nodes if neccessary
-// Used as more performant alternative of reconcile
+// doing only updates on all nodes and adding/removing nodes if neccessary.
+// Used as more performant alternative of reconcile.
+// Same as reconcile, it's designed for arrays with mutable items.
 reuseNodes(
     parent,
     renderedValues,
