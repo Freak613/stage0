@@ -14,7 +14,7 @@
   "author": "Pavel Martynov",
   "dependencies": {
     "local-web-server": "^2.6.0",
-    "stage0": "0.0.2"
+    "stage0": "0.0.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
