@@ -9,7 +9,7 @@ Given `h` function for extracting DOM references, organize work whatever you lik
 ## Benefits
 
 - Zero dependencies, tiny size. You barely feel it.
-- No building, no polyfills required. Create JS file, load it in the browser and it will just works.
+- No building, no polyfills required.
 - No abstractions. Complete freedom over rendering and updating pipelines. The code will do only what you want it to do.
 - Template strings. You don't need to write DOM API manually, cause cloning is much faster.
 - Performance. This library have all good ideas of [domc](https://github.com/Freak613/domc) library, which is already [doing pretty well](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html).
