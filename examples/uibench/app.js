@@ -1,5 +1,6 @@
 import {h,setupSyntheticEvent} from 'stage0'
 import keyed from 'stage0/keyed'
+import reconcile from 'stage0/reconcile'
 
 const cellView = h`<td class="TableCell">#text</td>`
 function TableCell(data) {
@@ -24,16 +25,19 @@ const rowView = h`<tr></tr>`
 function TableRow(item) {
     const root = rowView.cloneNode(true)
 
-    root.className = item.active ? 'TableRow active' : 'TableRow'
     root.dataset.id = item.id
 
     const id = TableCell('#' + item.id)
     root.appendChild(id)
 
-    let renderedProps = []
+    let renderedProps = [],
+        a, a2
     root.update = function(item) {
-        keyed(
-            'id',
+        a2 = item.active ? 'TableRow active' : 'TableRow'
+
+        if (a2 !== a) a = root.className = a2
+
+        reconcile(
             root,
             renderedProps,
             item.props,
