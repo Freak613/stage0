@@ -23,7 +23,7 @@ export function styles(stylesObj) {
         const classStyles = stylesObj[className]
 
         for(let rule in classStyles) {
-            if (rule[0] === ':') {
+            if (rule[0] === ':' || rule[0] === ' ') {
                 const pseudoRuleIdx = stylesheet.insertRule(`.${genClass}${rule} {}`, stylesheet.cssRules.length)
                 const pseudoRuleStyle = stylesheet.cssRules[pseudoRuleIdx].style
                 Object.assign(pseudoRuleStyle, classStyles[rule])
