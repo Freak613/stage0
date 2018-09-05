@@ -135,7 +135,7 @@ const refs = node.collect(node)
 
 ## setupSyntheticEvent
 ```javascript
-import {setupSyntheticEvent} from 'stage0'
+import {setupSyntheticEvent} from 'stage0/syntheticEvents'
 
 setupSyntheticEvent('click')
 // will setup global event handler, that will run handler from nearest predecessor in DOM tree
@@ -215,6 +215,10 @@ const s = styles({
         // pseudo-classes and pseudo-selectors are supported
         '::before': {
             content: '>'
+        },
+        // Nested selectors also supported
+        ' > div': {
+          color: '#DDDDDD'
         }
     }
 })
