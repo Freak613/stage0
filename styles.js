@@ -9,7 +9,7 @@ makeid.possible = "abcdefghijklmnopqrstuvwxyz"
 makeid.n = 0
 
 let stylesheet = document.createElement('style')
-stylesheet.id = 'domc'
+stylesheet.id = 'stage0'
 document.head.appendChild(stylesheet)
 stylesheet = stylesheet.sheet
 
