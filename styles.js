@@ -39,4 +39,26 @@ export function styles(stylesObj) {
     return stylesObj
 }
 
+export function keyframes(framesObj) {
+    for(let name in framesObj) {
+        const genName = `${name}-${makeid()}`
+        
+        const framesIdx = stylesheet.insertRule(`@keyframes ${genName} {}`, stylesheet.cssRules.length)
+        const framesSheet = stylesheet.cssRules[framesIdx]
+        
+        const frames = framesObj[name]
+
+        for(let percent in frames) {
+            framesSheet.appendRule(`${percent}% {}`)
+            const frameIdx = framesSheet.cssRules.length - 1
+            const frameStyle = framesSheet.cssRules[frameIdx].style
+            Object.assign(frameStyle, frames[percent])
+        }
+        
+        framesObj[name] = genName
+    }
+
+    return framesObj
+}
+
 export default styles

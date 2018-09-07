@@ -225,3 +225,21 @@ const s = styles({
 // s will have s.base === 'base-a'
 // styles will generate uniq alphabet tokens and append it to the end of className
 ```
+
+## keyframes
+```javascript
+import {keyframes} from 'stage0/styles'
+
+// Utility for keyframes generation, similar to `styles`
+const s = keyframes({
+    effect: {
+        0: {
+          display: 'flex'
+        },
+        100: {
+          display: 'none'
+        }
+    }
+})
+// s will have s.effect === 'effect-a'
+```
