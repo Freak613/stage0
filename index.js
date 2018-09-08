@@ -27,6 +27,10 @@ function walker(node) {
   if (ref = collector(node)) code2 += `refs.${ref} = node;\n` 
   do {
       if (!skip && (tmp = node.firstChild)) {
+          if (tmp.nodeType === 8) {
+              tmp.parentNode.removeChild(tmp)
+              continue
+          }
           skip = false       
 
           prevPathId = pathId
@@ -35,6 +39,10 @@ function walker(node) {
 
           if (ref = collector(tmp)) code2 += `refs.${ref} = ${pathId};\n` 
       } else if (tmp = node.nextSibling) {
+          if (tmp.nodeType === 8) {
+              tmp.parentNode.removeChild(tmp)
+              continue
+          }
           skip = false
 
           prevPathId = pathId
@@ -59,7 +67,11 @@ function walker(node) {
 
 const compilerTemplate = document.createElement('template')
 export function h(strings) {
-  const template = strings[0].replace(/\n*/g, '').replace(/\s*</g, '<').replace(/>\s*/g, '>')
+  const template = strings[0]
+    .replace(/>\n+/g, '>')
+    .replace(/\s+</g, '<')
+    .replace(/>\s+/g, '>')
+    .replace(/\n\s+/g, '<!-- -->')
   compilerTemplate.innerHTML = template
   const content = compilerTemplate.content.firstChild
   content.collect = walker(content)
