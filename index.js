@@ -66,8 +66,12 @@ function walker(node) {
 }
 
 const compilerTemplate = document.createElement('template')
-export function h(strings) {
-  const template = strings[0]
+export function h(strings, ...args) {
+  let result = ''
+  for(let i = 0; i < args.length; i++) result += strings[i] + args[i]
+  result += strings[strings.length - 1]
+
+  const template = result
     .replace(/>\n+/g, '>')
     .replace(/\s+</g, '<')
     .replace(/>\s+/g, '>')
