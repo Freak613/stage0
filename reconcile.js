@@ -8,19 +8,32 @@
 // How this implementation differs from others, is that it's working with data directly,
 // without maintaining nodes arrays, and uses dom props firstChild/lastChild/nextSibling
 // for markers moving.
-export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNode) {
+export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNode, afterNode) {
     // Fast path for clear
     if (data.length === 0) {
-        parent.textContent = ""
+        if (beforeNode !== undefined || afterNode !== undefined) {
+            let node = beforeNode !== undefined ? beforeNode.nextSibling : parent.firstChild,
+                tmp
+
+            if (afterNode === undefined) afterNode = null
+
+            while(node !== afterNode) {
+                tmp = node.nextSibling
+                parent.removeChild(node)
+                node = tmp
+            }
+        } else {
+            parent.textContent = ""    
+        }
         return
     }
 
     // Fast path for create
     if (renderedValues.length === 0) {
-        let node
+        let node, mode = afterNode !== undefined ? 1 : 0
         for(let i = 0, len = data.length; i < len; i++) {
             node = createFn(data[i])
-            parent.appendChild(node)
+            mode ? parent.insertBefore(node, afterNode) : parent.appendChild(node)
         }
         return
     }
@@ -32,9 +45,8 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
         a, b,
         prevStartNode = beforeNode ? beforeNode.nextSibling : parent.firstChild,
         newStartNode = prevStartNode,
-        prevEndNode = parent.lastChild,
-        newEndNode = prevEndNode,
-        afterNode
+        prevEndNode = afterNode ? afterNode.previousSibling : parent.lastChild,
+        newEndNode = prevEndNode
     
     fixes: while(loop) {
         loop = false
@@ -148,9 +160,13 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
 
     // Fast path for full replace
     if (reusingNodes === 0) {
-        if (beforeNode) {
-            let node = beforeNode.nextSibling, tmp
-            while(prevStart <= prevEnd) {
+        if (beforeNode !== undefined || afterNode !== undefined) {
+            let node = beforeNode !== undefined ? beforeNode.nextSibling : parent.firstChild,
+                tmp
+
+            if (afterNode === undefined) afterNode = null
+
+            while(node !== afterNode) {
                 tmp = node.nextSibling
                 parent.removeChild(node)
                 node = tmp
@@ -159,10 +175,11 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
         } else {
             parent.textContent = ""
         }
-        let node
+
+        let node, mode = afterNode ? 1 : 0
         for(let i = newStart; i <= newEnd; i++) {
             node = createFn(data[i])
-            parent.appendChild(node)
+            mode ? parent.insertBefore(node, afterNode) : parent.appendChild(node)
         }
 
         return
