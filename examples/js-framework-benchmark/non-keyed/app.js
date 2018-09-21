@@ -1,4 +1,5 @@
-import {h, setupSyntheticEvent} from 'stage0'
+import h from 'stage0'
+import {setupSyntheticEvent} from 'stage0/syntheticEvents'
 import {reuseNodes} from 'stage0/reuseNodes'
 
 let did = 1

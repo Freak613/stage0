@@ -1,4 +1,5 @@
-import {h, setupSyntheticEvent} from 'stage0'
+import h from 'stage0'
+import {setupSyntheticEvent} from 'stage0/syntheticEvents'
 import {reconcile} from 'stage0/reconcile'
 
 let did = 1

@@ -163,7 +163,9 @@ reconcile(
     // Update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
-    beforeNode
+    beforeNode,
+    // Optional, node that comes after rendered list
+    afterNode
 )
 ```
 
@@ -183,7 +185,9 @@ keyed(
     // Update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
-    beforeNode
+    beforeNode,
+    // Optional, node that comes after rendered list
+    afterNode
 )
 ```
 
@@ -202,7 +206,11 @@ reuseNodes(
     // Create callback
     item => document.createTextNode(item),
     // Update callback
-    (node, item) => node.nodeValue = item + ' !!!'
+    (node, item) => node.nodeValue = item + ' !!!',
+    // Optional, node that comes before rendered list
+    beforeNode,
+    // Optional, node that comes after rendered list
+    afterNode
 )
 ```
 
