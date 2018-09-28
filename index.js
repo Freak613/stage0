@@ -85,17 +85,17 @@ function walker(node) {
   const {paths, reflist} = this._refPaths
   const _ = ACTIONS
 
-  let tmp = node, refIdx = 0, path
+  let refIdx = 0, path
   for(let i = 0; i < paths.length; i++) {
     path = paths[i]
     if (path & _.TAKE) {
-      refs[reflist[refIdx++]] = tmp
+      refs[reflist[refIdx++]] = node
     } else if (path & _.FIRST_CHILD) {
-      tmp = tmp.firstChild
+      node = node.firstChild
     } else if (path & _.NEXT_SIBLING) {
-      tmp = tmp.nextSibling
+      node = node.nextSibling
     } else if (path & _.PARENT_NODE) {
-      tmp = tmp.parentNode
+      node = node.parentNode
     }
   }
 
