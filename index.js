@@ -21,10 +21,25 @@ function collector(node) {
   }
 }
 
-function walker(node) {
-  let skip = false, tmp, pathId = '', prevPathId, pahtIdLen, code1, code2, ref
-  code1 = code2 = ''
-  if (ref = collector(node)) code2 += `refs.${ref} = node;\n` 
+const ACTIONS = {}
+ACTIONS.TAKE = 0x00000001
+ACTIONS.FIRST_CHILD = ACTIONS.TAKE << 1
+ACTIONS.NEXT_SIBLING = ACTIONS.FIRST_CHILD << 1
+ACTIONS.PARENT_NODE = ACTIONS.NEXT_SIBLING << 1
+
+function genPath(node) {
+  let skip = false,
+    tmp,
+    ref,
+    paths = [],
+    reflist = [],
+    root = node,
+    lastTakeIdx
+
+  if (ref = collector(node)) {
+    lastTakeIdx = paths.length
+    paths.push(ACTIONS.TAKE)
+  }
   do {
       if (!skip && (tmp = node.firstChild)) {
           if (tmp.nodeType === 8) {
@@ -33,11 +48,13 @@ function walker(node) {
           }
           skip = false       
 
-          prevPathId = pathId
-          pathId += '_f'
-          code1 += `let ${pathId} = ${prevPathId || 'node'}.firstChild;\n` 
+          paths.push(ACTIONS.FIRST_CHILD)
 
-          if (ref = collector(tmp)) code2 += `refs.${ref} = ${pathId};\n` 
+          if (ref = collector(tmp)) {
+            lastTakeIdx = paths.length
+            paths.push(ACTIONS.TAKE)
+            reflist.push(ref)
+          }
       } else if (tmp = node.nextSibling) {
           if (tmp.nodeType === 8) {
               tmp.parentNode.removeChild(tmp)
@@ -45,24 +62,44 @@ function walker(node) {
           }
           skip = false
 
-          prevPathId = pathId
-          pathId += '_n'
-          code1 += `let ${pathId} = ${prevPathId || 'node'}.nextSibling;\n` 
+          paths.push(ACTIONS.NEXT_SIBLING)
 
-          if (ref = collector(tmp)) code2 += `refs.${ref} = ${pathId};\n` 
-      } else {
-          pahtIdLen = pathId.length
-          if (pathId[pahtIdLen - 1] === 'n') {
-              pathId = pathId.slice(0, pathId.lastIndexOf('_f_n'))
-          } else {
-             pathId = pathId.slice(0, pahtIdLen- 2) 
+          if (ref = collector(tmp)) {
+            lastTakeIdx = paths.length
+            paths.push(ACTIONS.TAKE)
+            reflist.push(ref)
           }
+      } else {
+          paths.push(ACTIONS.PARENT_NODE)
           tmp = node.parentNode
           skip = true
       }
       node = tmp
-  } while (node)
-  return Function('node', code1 + 'let refs = {};\n' + code2 + 'return refs;\n')
+  } while (node && node !== root)
+  paths = new Uint8ClampedArray(paths.slice(0, lastTakeIdx + 1))
+  return {paths, reflist}
+}
+
+function walker(node) {
+  const refs = {}
+  const {paths, reflist} = this._refPaths
+  const _ = ACTIONS
+
+  let tmp = node, refIdx = 0, path
+  for(let i = 0; i < paths.length; i++) {
+    path = paths[i]
+    if (path & _.TAKE) {
+      refs[reflist[refIdx++]] = tmp
+    } else if (path & _.FIRST_CHILD) {
+      tmp = tmp.firstChild
+    } else if (path & _.NEXT_SIBLING) {
+      tmp = tmp.nextSibling
+    } else if (path & _.PARENT_NODE) {
+      tmp = tmp.parentNode
+    }
+  }
+
+  return refs
 }
 
 const compilerTemplate = document.createElement('template')
@@ -78,7 +115,8 @@ export function h(strings, ...args) {
     .replace(/\n\s+/g, '<!-- -->')
   compilerTemplate.innerHTML = template
   const content = compilerTemplate.content.firstChild
-  content.collect = walker(content)
+  content._refPaths = genPath(content)
+  content.collect = walker
   return content
 }
 export default h
