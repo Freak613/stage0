@@ -21,83 +21,44 @@ function collector(node) {
   }
 }
 
-const ACTIONS = {}
-ACTIONS.TAKE = 0x00000001
-ACTIONS.FIRST_CHILD = ACTIONS.TAKE << 1
-ACTIONS.NEXT_SIBLING = ACTIONS.FIRST_CHILD << 1
-ACTIONS.PARENT_NODE = ACTIONS.NEXT_SIBLING << 1
+const TREE_WALKER = document.createTreeWalker(document, NodeFilter.SHOW_ALL, null, false)
+TREE_WALKER.roll = function(n) {
+  let tmp
+  while(--n) tmp = this.nextNode()
+  return tmp
+}
+
+class Ref {
+  constructor(idx, ref) {
+    this.idx = idx
+    this.ref = ref
+  }
+}
 
 function genPath(node) {
-  let skip = false,
-    tmp,
-    ref,
-    paths = [],
-    reflist = [],
-    root = node,
-    lastTakeIdx
+  const w = TREE_WALKER
+  w.currentNode = node
 
-  if (ref = collector(node)) {
-    lastTakeIdx = paths.length
-    paths.push(ACTIONS.TAKE)
-  }
+  let indices = [], ref, idx = 0
   do {
-      if (!skip && (tmp = node.firstChild)) {
-          if (tmp.nodeType === 8) {
-              tmp.parentNode.removeChild(tmp)
-              continue
-          }
-          skip = false       
+    if (ref = collector(node)) {
+      indices.push(new Ref(idx+1, ref))
+      idx = 1
+    } else {
+      idx++  
+    }
+  } while(node = w.nextNode())
 
-          paths.push(ACTIONS.FIRST_CHILD)
-
-          if (ref = collector(tmp)) {
-            lastTakeIdx = paths.length
-            paths.push(ACTIONS.TAKE)
-            reflist.push(ref)
-          }
-      } else if (tmp = node.nextSibling) {
-          if (tmp.nodeType === 8) {
-              tmp.parentNode.removeChild(tmp)
-              continue
-          }
-          skip = false
-
-          paths.push(ACTIONS.NEXT_SIBLING)
-
-          if (ref = collector(tmp)) {
-            lastTakeIdx = paths.length
-            paths.push(ACTIONS.TAKE)
-            reflist.push(ref)
-          }
-      } else {
-          paths.push(ACTIONS.PARENT_NODE)
-          tmp = node.parentNode
-          skip = true
-      }
-      node = tmp
-  } while (node && node !== root)
-  paths = new Uint8ClampedArray(paths.slice(0, lastTakeIdx + 1))
-  return {paths, reflist}
+  return indices
 }
 
 function walker(node) {
   const refs = {}
-  const {paths, reflist} = this._refPaths
-  const _ = ACTIONS
 
-  let refIdx = 0, path
-  for(let i = 0; i < paths.length; i++) {
-    path = paths[i]
-    if (path & _.TAKE) {
-      refs[reflist[refIdx++]] = node
-    } else if (path & _.FIRST_CHILD) {
-      node = node.firstChild
-    } else if (path & _.NEXT_SIBLING) {
-      node = node.nextSibling
-    } else if (path & _.PARENT_NODE) {
-      node = node.parentNode
-    }
-  }
+  const w = TREE_WALKER
+  w.currentNode = node
+
+  this._refPaths.map(x => refs[x.ref] = w.roll(x.idx))
 
   return refs
 }
