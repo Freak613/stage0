@@ -8,7 +8,7 @@ Given `h` function for extracting DOM references, organize work whatever you lik
 
 ## Benefits
 
-- Zero dependencies, tiny size (628B index.js + 1.04Kb reconcile.js). You barely feel it.
+- Zero dependencies, tiny size (628B index.js + 1.04Kb reconcile.js).
 - No building, no polyfills required.
 - No abstractions. Complete freedom over rendering and updating pipelines. The code will do only what you want it to do.
 - Template strings. You don't need to write DOM API manually, cause cloning is much faster.
