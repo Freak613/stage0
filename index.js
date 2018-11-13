@@ -2,7 +2,7 @@
 function collector(node) {
   if (node.nodeType !== 3) {
     if (node.attributes !== undefined) {
-      for(let attr of node.attributes) {
+      for(let attr of Array.from(node.attributes)) {
         let aname = attr.name
         if (aname[0] === '#') {
           node.removeAttribute(aname)
