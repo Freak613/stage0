@@ -1,32 +1,32 @@
 # stage0
 
-Collection of low-level DOM tools for building high performant web interfaces using plain old Vanilla JS.
+Collection of low-level DOM tools for building high performance web interfaces using plain old Vanilla JS.
 
 ## Eh?
 
-Given `h` function for extracting DOM references, organize work whatever you like and use full power of native DOM API.
+Given a function `h` for building and working with the DOM nodes, organize your work however you like and use the full power of the native DOM API.
 
 ## Benefits
 
 - Zero dependencies, tiny size (628B index.js + 1.04Kb reconcile.js).
 - No building, no polyfills required.
 - No abstractions. Complete freedom over rendering and updating pipelines. The code will do only what you want it to do.
-- Template strings. You don't need to write DOM API manually, cause cloning is much faster.
-- Performance. This library have all good ideas of [domc](https://github.com/Freak613/domc) library, which is already [doing pretty well](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html).
+- Template strings. You don't need to write DOM API manually, because cloning is much faster.
+- Performance. This library has all of the good ideas of the [domc](https://github.com/Freak613/domc) library, which is already [doing pretty well](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html).
   - [uibench](https://localvoid.github.io/uibench/)
   - [js-framework-benchmark](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
 
-Check out [examples](https://github.com/Freak613/stage0/tree/master/examples)
+Check out the [examples](https://github.com/Freak613/stage0/tree/master/examples)
 
 ## How can I use it?
 
-Let's build simple counter example:
+Let's build a simple counter as an example:
 
 ```javascript
 import h from 'stage0'
 
 // Create view template.
-// Mark with #-syntax dynamic references that you need.
+// Mark dynamic references with a #-syntax where needed.
 const view = h`
   <div>
     <h1>#count</h1>
@@ -63,7 +63,7 @@ function Main() {
 document.body.appendChild(Main())
 ```
 
-More complex example:
+A more complex example:
 
 ```javascript
 import h from 'stage0'
@@ -125,11 +125,9 @@ const node = h`
         <div #content></div>
     </div>
 `
-// will give you ready to use DOM node, which you can clone or append directly wherever you need
+// will give you a ready to use DOM node, which you can clone or append directly wherever you need
 
-// h generates function with memoized DOM paths for obtaining references.
-// Given #-syntax, you can collect references to DOM nodes in this DOM 
-// or cloned or any other DOM node with similar structure.
+// h augments the dom node with a function `collect` which collects and memoizes references to DOM nodes
 
 const refs = node.collect(node)
 // refs === {root: Node, header: Node, content: Node}
@@ -140,10 +138,10 @@ const refs = node.collect(node)
 import {setupSyntheticEvent} from 'stage0/syntheticEvents'
 
 setupSyntheticEvent('click')
-// will setup global event handler, that will run handler from nearest predecessor in DOM tree
-// Synthetic Events are used to reduce amount of listeners on page
+// will setup a global event handler that will run the handler from nearest predecessor in the DOM tree,
+// greatly reducing the number of listeners on the page
 
-// To attach event handler, simply do
+// To attach an event handler to a dom node, simply do
 node.__click = () => console.debug('click')
 ```
 
@@ -151,9 +149,9 @@ node.__click = () => console.debug('click')
 ```javascript
 import reconcile from 'stage0/reconcile'
 
-// Reconcile nodes in given parent, comparing new and previous data arrays.
+// Reconcile nodes in the given parent, comparing new and previous data arrays.
 // Used for displaying node arrays.
-// Good for arrays with mutable data, cause it compares array items directly.
+// Good for arrays with mutable data, because it compares array items directly.
 reconcile(
     parent,
     renderedValues,
@@ -240,7 +238,7 @@ const s = styles({
 ```javascript
 import {keyframes} from 'stage0/styles'
 
-// Utility for keyframes generation, similar to `styles`
+// Utility for generating keyframes, similar to `styles`
 const s = keyframes({
     effect: {
         0: {
