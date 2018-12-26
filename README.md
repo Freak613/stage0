@@ -8,7 +8,7 @@ Given a function `h` for building and working with the DOM nodes, organize your 
 
 ## Benefits
 
-- Zero dependencies, tiny size (628B index.js + 1.04Kb reconcile.js).
+- Zero dependencies, tiny size (570B index.js + 1.04Kb reconcile.js).
 - No building, no polyfills required.
 - No abstractions. Complete freedom over rendering and updating pipelines. The code will do only what you want it to do.
 - Template strings. You don't need to write DOM API manually, because cloning is much faster.
