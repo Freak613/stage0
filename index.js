@@ -23,7 +23,7 @@ function collector(node) {
 
 const TREE_WALKER = document.createTreeWalker(document, NodeFilter.SHOW_ALL, null, false)
 TREE_WALKER.roll = function(n) {
-  let tmp
+  let tmp = this.currentNode
   while(--n) tmp = this.nextNode()
   return tmp
 }
