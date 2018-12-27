@@ -22,10 +22,9 @@ function collector(node) {
 }
 
 const TREE_WALKER = document.createTreeWalker(document, NodeFilter.SHOW_ALL, null, false)
-TREE_WALKER.roll = function(n) {
-  let tmp
-  while(--n) tmp = this.nextNode()
-  return tmp
+TREE_WALKER.roll = function(n) { 
+  while(--n) this.nextNode()
+  return this.currentNode
 }
 
 class Ref {
