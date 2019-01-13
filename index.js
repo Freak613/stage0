@@ -22,7 +22,7 @@ function collector(node) {
 }
 
 const TREE_WALKER = document.createTreeWalker(document, NodeFilter.SHOW_ALL, null, false)
-TREE_WALKER.roll = function(n) { 
+TREE_WALKER.roll = function(n) {
   while(--n) this.nextNode()
   return this.currentNode
 }
@@ -44,7 +44,7 @@ function genPath(node) {
       indices.push(new Ref(idx+1, ref))
       idx = 1
     } else {
-      idx++  
+      idx++
     }
   } while(node = w.nextNode())
 
@@ -62,6 +62,11 @@ function walker(node) {
   return refs
 }
 
+export function compile(node) {
+    node._refPaths = genPath(node)
+    node.collect = walker
+}
+
 const compilerTemplate = document.createElement('template')
 export function h(strings, ...args) {
   const template = String.raw(strings, ...args)
@@ -71,8 +76,7 @@ export function h(strings, ...args) {
     .replace(/\n\s+/g, '<!-- -->')
   compilerTemplate.innerHTML = template
   const content = compilerTemplate.content.firstChild
-  content._refPaths = genPath(content)
-  content.collect = walker
+  compile(content)
   return content
 }
 export default h
