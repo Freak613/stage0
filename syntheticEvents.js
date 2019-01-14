@@ -4,7 +4,7 @@ const nativeToSyntheticEvent = (event, name) => {
     while(dom !== null) {
         const eventHandler = dom[eventKey]
         if (eventHandler) {
-            eventHandler()
+            eventHandler(event)
             return
         }
         dom = dom.parentNode
