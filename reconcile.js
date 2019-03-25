@@ -23,7 +23,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
                 node = tmp
             }
         } else {
-            parent.textContent = ""    
+            parent.textContent = ""
         }
         return
     }
@@ -47,7 +47,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
         newStartNode = prevStartNode,
         prevEndNode = afterNode ? afterNode.previousSibling : parent.lastChild,
         newEndNode = prevEndNode
-    
+
     fixes: while(loop) {
         loop = false
         let _node
@@ -117,7 +117,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
                 if (prevEnd === 0) {
                     parent.removeChild(prevEndNode)
                 } else {
-                    next = prevEndNode.previousSibling    
+                    next = prevEndNode.previousSibling
                     parent.removeChild(prevEndNode)
                     prevEndNode = next
                 }
@@ -148,7 +148,9 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
     const I = new Map()
     for(let i = newStart; i <= newEnd; i++) I.set(data[i], i)
 
-    let reusingNodes = 0, toRemove = []
+    let reusingNodes = newStart + data.length - 1 - newEnd,
+        toRemove = []
+
     for(let i = prevStart; i <= prevEnd; i++) {
         if (I.has(renderedValues[i])) {
             P[I.get(renderedValues[i])] = i
@@ -256,7 +258,7 @@ function findGreatestIndexLEQ(seq, n) {
     // therefore, they actually start out of range: (-1, last + 1)
     var lo = -1,
         hi = seq.length;
-    
+
     // fast path for simple increasing sequences
     if (hi > 0 && seq[hi - 1] <= n) return hi - 1;
 

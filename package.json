@@ -1,6 +1,6 @@
 {
   "name": "stage0",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Collection of low-level DOM tools for building high performant web interfaces",
   "main": "index.js",
   "scripts": {
