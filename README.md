@@ -11,7 +11,7 @@ Given a function `h` for building and working with the DOM nodes, organize your 
 - Zero dependencies, tiny size (570B index.js + 1.04Kb reconcile.js).
 - No building, no polyfills required.
 - No abstractions. Complete freedom over rendering and updating pipelines. The code will do only what you want it to do.
-- Template strings. You don't need to write DOM API manually, because cloning is much faster.
+- Template strings. Produce real DOM node ready for cloning or using directly.
 - Performance. This library has all of the good ideas of the [domc](https://github.com/Freak613/domc) library, which is already [doing pretty well](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html).
   - [uibench](https://localvoid.github.io/uibench/)
   - [js-framework-benchmark](https://rawgit.com/krausest/js-framework-benchmark/master/webdriver-ts-results/table.html)
