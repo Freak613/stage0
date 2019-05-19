@@ -45,8 +45,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
         a, b,
         prevStartNode = beforeNode ? beforeNode.nextSibling : parent.firstChild,
         newStartNode = prevStartNode,
-        prevEndNode = afterNode ? afterNode.previousSibling : parent.lastChild,
-        newEndNode = prevEndNode
+        prevEndNode = afterNode ? afterNode.previousSibling : parent.lastChild;
 
     fixes: while(loop) {
         loop = false
@@ -71,7 +70,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
             prevEnd--
             newEnd--
             afterNode = prevEndNode
-            newEndNode = prevEndNode = prevEndNode.previousSibling
+            prevEndNode = prevEndNode.previousSibling
             if (prevEnd < prevStart || newEnd < newStart) break fixes
             a = renderedValues[prevEnd]
             b = data[newEnd]
@@ -84,7 +83,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
             noOp(prevEndNode, b)
             _node = prevEndNode.previousSibling
             parent.insertBefore(prevEndNode, newStartNode)
-            newEndNode = prevEndNode = _node
+            prevEndNode = _node
             newStart++
             prevEnd--
             if (prevEnd < prevStart || newEnd < newStart) break fixes
@@ -100,7 +99,7 @@ export function reconcile(parent, renderedValues, data, createFn, noOp, beforeNo
             _node = prevStartNode.nextSibling
             parent.insertBefore(prevStartNode, afterNode)
             prevStart++
-            afterNode = newEndNode = prevStartNode
+            afterNode = prevStartNode
             prevStartNode = _node
             newEnd--
             if (prevEnd < prevStart || newEnd < newStart) break fixes
