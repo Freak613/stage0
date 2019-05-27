@@ -54,7 +54,7 @@ export function keyed(key, parent, renderedValues, data, createFn, noOp, beforeN
         // Skip prefix
         a = renderedValues[prevStart], b = data[newStart]
         while(a[key] === b[key]) {
-            noOp(prevStartNode, b)
+            if (noOp) noOp(prevStartNode, b)
             prevStart++
             newStart++
             newStartNode = prevStartNode = prevStartNode.nextSibling
@@ -66,7 +66,7 @@ export function keyed(key, parent, renderedValues, data, createFn, noOp, beforeN
         // Skip suffix
         a = renderedValues[prevEnd], b = data[newEnd]
         while(a[key] === b[key]) {
-            noOp(prevEndNode, b)
+            if (noOp) noOp(prevEndNode, b)
             prevEnd--
             newEnd--
             afterNode = prevEndNode
@@ -80,7 +80,7 @@ export function keyed(key, parent, renderedValues, data, createFn, noOp, beforeN
         a = renderedValues[prevEnd], b = data[newStart]
         while(a[key] === b[key]) {
             loop = true
-            noOp(prevEndNode, b)
+            if (noOp) noOp(prevEndNode, b)
             _node = prevEndNode.previousSibling
             parent.insertBefore(prevEndNode, newStartNode)
             prevEndNode = _node
@@ -95,7 +95,7 @@ export function keyed(key, parent, renderedValues, data, createFn, noOp, beforeN
         a = renderedValues[prevStart], b = data[newEnd]
         while(a[key] === b[key]) {
             loop = true
-            noOp(prevStartNode, b)
+            if (noOp) noOp(prevStartNode, b)
             _node = prevStartNode.nextSibling
             parent.insertBefore(prevStartNode, afterNode)
             prevStart++
@@ -203,14 +203,14 @@ export function keyed(key, parent, renderedValues, data, createFn, noOp, beforeN
     for(let i = newEnd; i >= newStart; i--) {
         if(longestSeq[lisIdx] === i) {
             afterNode = nodes[P[longestSeq[lisIdx]]]
-            noOp(afterNode, data[i])
+            if (noOp) noOp(afterNode, data[i])
             lisIdx--
         } else {
             if (P[i] === -1) {
                 tmpD = createFn(data[i])
             } else {
                 tmpD = nodes[P[i]]
-                noOp(tmpD, data[i])
+                if (noOp) noOp(tmpD, data[i])
             }
             parent.insertBefore(tmpD, afterNode)
             afterNode = tmpD

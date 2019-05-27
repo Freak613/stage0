@@ -13,7 +13,7 @@ export function reuseNodes(parent, renderedValues, data, createFn, noOp, beforeN
                 node = tmp
             }
         } else {
-            parent.textContent = ""    
+            parent.textContent = ""
         }
         return
     }
@@ -36,7 +36,7 @@ export function reuseNodes(parent, renderedValues, data, createFn, noOp, beforeN
     for(let i = 0, item, head = _head, mode = _mode; i < data.length; i++) {
         item = data[i]
         if (head) {
-            noOp(head, item)
+            if (noOp) noOp(head, item)
         } else {
             head = createFn(item)
             mode ? parent.insertBefore(head, afterNode) : parent.appendChild(head)

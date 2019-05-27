@@ -158,7 +158,7 @@ reconcile(
     newValues,
     // Create callback
     item => document.createTextNode(item),
-    // Update callback
+    // Optional, update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
     beforeNode,
@@ -180,7 +180,7 @@ keyed(
     newValues,
     // Create callback
     item => document.createTextNode(item),
-    // Update callback
+    // Optional, update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
     beforeNode,
@@ -203,7 +203,7 @@ reuseNodes(
     newValues,
     // Create callback
     item => document.createTextNode(item),
-    // Update callback
+    // Optional, update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
     beforeNode,
