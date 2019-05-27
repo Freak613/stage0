@@ -4,6 +4,6 @@ export default function keyed(
     renderedValues: any[],
     data: any[],
     createFn: Function,
-    noOp: Function,
+    noOp?: Function,
     beforeNode?: Node,
     afterNode?: Node): void;

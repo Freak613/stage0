@@ -3,6 +3,6 @@ export default function reconcile(
     renderedValues: any[],
     data: any[],
     createFn: Function,
-    noOp: Function,
+    noOp?: Function,
     beforeNode?: Node,
     afterNode?: Node): void;
