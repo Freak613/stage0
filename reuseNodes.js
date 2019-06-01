@@ -1,6 +1,6 @@
 import { noOpUpdate } from './utils';
 
-export function reuseNodes(parent, renderedValues, data, createFn, noOp, beforeNode, afterNode) {
+export function reuseNodes(parent, renderedValues, data, createFn, noOp = noOpUpdate, beforeNode, afterNode) {
     if (data.length === 0) {
         if (beforeNode !== undefined || afterNode !== undefined) {
             let node = beforeNode !== undefined ? beforeNode.nextSibling : parent.firstChild,
