@@ -1,3 +1,4 @@
+import { noOpUpdate } from './utils';
 
 export function reuseNodes(parent, renderedValues, data, createFn, noOp, beforeNode, afterNode) {
     if (data.length === 0) {
@@ -13,7 +14,7 @@ export function reuseNodes(parent, renderedValues, data, createFn, noOp, beforeN
                 node = tmp
             }
         } else {
-            parent.textContent = ""    
+            parent.textContent = ""
         }
         return
     }

@@ -95,7 +95,7 @@ function Item(item, scope) {
   root.update = function(selected) {
     a2 = item.id === selected ? 'danger' : ''
     b2 = item.label
-    
+
     if (a2 !== a) a = root.className = a2
     if (b2 !== b) b = label.nodeValue = b2
   }
@@ -158,7 +158,7 @@ reconcile(
     newValues,
     // Create callback
     item => document.createTextNode(item),
-    // Update callback
+    // Optional, update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
     beforeNode,
@@ -180,7 +180,7 @@ keyed(
     newValues,
     // Create callback
     item => document.createTextNode(item),
-    // Update callback
+    // Optional, update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
     beforeNode,
@@ -193,7 +193,7 @@ keyed(
 ```javascript
 import reuseNodes from 'stage0/reuseNodes'
 
-// Similar to reconcile, with exception that it will not move any node, 
+// Similar to reconcile, with exception that it will not move any node,
 // doing only updates on all nodes and adding/removing nodes if neccessary.
 // Used as more performant alternative of reconcile.
 // Same as reconcile, it's designed for arrays with mutable items.
@@ -203,7 +203,7 @@ reuseNodes(
     newValues,
     // Create callback
     item => document.createTextNode(item),
-    // Update callback
+    // Optional, update callback
     (node, item) => node.nodeValue = item + ' !!!',
     // Optional, node that comes before rendered list
     beforeNode,

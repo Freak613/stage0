@@ -1,3 +1,4 @@
+import { noOpUpdate } from './utils';
 
 // This is almost straightforward implementation of reconcillation algorithm
 // based on ivi documentation:
@@ -8,7 +9,7 @@
 // How this implementation differs from others, is that it's working with data directly,
 // without maintaining nodes arrays, and uses dom props firstChild/lastChild/nextSibling
 // for markers moving.
-export function keyed(key, parent, renderedValues, data, createFn, noOp, beforeNode, afterNode) {
+export function keyed(key, parent, renderedValues, data, createFn, noOp = noOpUpdate, beforeNode, afterNode) {
     // Fast path for clear
     if (data.length === 0) {
         if (beforeNode !== undefined || afterNode !== undefined) {
