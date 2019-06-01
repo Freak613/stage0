@@ -9,15 +9,14 @@
   "author": "Pavel Martynov <martynov.pl@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-es2016": "^6.24.1",
-    "rollup": "^0.58.2",
-    "rollup-plugin-babel": "^3.0.4",
-    "rollup-plugin-minifyliterals": "^1.1.0",
-    "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-terser": "^1.0.1",
-    "rollup-plugin-uglify": "^3.0.0",
-    "uglify-es": "^3.3.9"
+    "@babel/core": "7.4.5",
+    "@babel/preset-env": "7.4.5",
+    "rollup": "1.13.0",
+    "rollup-plugin-babel": "4.3.2",
+    "rollup-plugin-minifyliterals": "1.1.0",
+    "rollup-plugin-node-resolve": "5.0.1",
+    "rollup-plugin-terser": "5.0.0",
+    "rollup-plugin-uglify": "6.0.0",
+    "uglify-es": "3.3.9"
   }
 }

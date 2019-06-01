@@ -8,18 +8,14 @@ import minifyliterals from 'rollup-plugin-minifyliterals';
 
 const plugins = [
   resolve({
-    module: true,
-    jsnext: true,
+    mainFields: ['module', 'jsnext'],
     browser: true,
   }),
   minifyliterals(),
   babel({
     exclude: 'node_modules/**',
     presets: [
-      [ "es2016" ]
-    ],
-    plugins: [
-      "external-helpers"
+      [ "@babel/preset-env" ]
     ],
     runtimeHelpers: true,
     babelrc: false,
